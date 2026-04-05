@@ -1,0 +1,1066 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "private_outputs": true,
+      "provenance": [],
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/arlenfreitas26/MVP/blob/main/C%3A%5CUsers%5CSamsung%5CDocuments%5CGitHub%5CMVP\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "id": "hAdudXVYTRfI"
+      },
+      "outputs": [],
+      "source": [
+        "## Carrega bibliotecas utilizadas\n",
+        "\n",
+        "import pandas as pd\n",
+        "import numpy as np\n",
+        "\n",
+        "import matplotlib.pyplot as plt\n",
+        "import matplotlib as mpl\n",
+        "import seaborn as sns\n",
+        "\n",
+        "from matplotlib.patches import Patch, Polygon\n",
+        "from matplotlib.lines import Line2D\n",
+        "from IPython.display import display, Markdown"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#from google.colab import files # importa os dados do excel\n",
+        "\n",
+        "#uploaded = files.upload()"
+      ],
+      "metadata": {
+        "id": "K1Nn4UT5TW6n"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# Carrega arquivo csv usando Pandas através de uma URL\n",
+        "\n",
+        "# URL do dataset\n",
+        "url = \"https://raw.githubusercontent.com/arlenfreitas26/MVP/refs/heads/main/kidney_disease.csv\"\n",
+        "\n",
+        "# Lê o arquivo utilizando - primeira linha contém o cabeçalho neste caso\n",
+        "mvp = pd.read_csv(url, delimiter=',')"
+      ],
+      "metadata": {
+        "id": "Ft4hMyxKPxMF"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "## Verifica a versão da matplotlib instalada\n",
+        "mpl.__version__"
+      ],
+      "metadata": {
+        "id": "CX77xDcRT2wu"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "mvp = pd.read_csv(url, delimiter=',')"
+      ],
+      "metadata": {
+        "id": "Wp8YeMmTUaMP"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# verificando os tipos de cada coluna do dataframe\n",
+        "mvp.dtypes"
+      ],
+      "metadata": {
+        "id": "dL6yw-6TUknV"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#Mostrando os nome das colunas que tem variáveis categóricas\n",
+        "mvp.select_dtypes(include=['object']).columns"
+      ],
+      "metadata": {
+        "id": "xh6ECp-WAzld"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#Mostrando as colunas que tem apenas variáveis categóricas\n",
+        "mvp.select_dtypes(include='object')"
+      ],
+      "metadata": {
+        "id": "aba9O0VUBaO-"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "82973f11"
+      },
+      "source": [
+        "#Exibir as colunas que há apenas objeto\n",
+        "non_numeric_cols = ['rbc', 'pc', 'pcc', 'ba', 'htn', 'dm', 'cad', 'appet', 'pe', 'ane', 'classification']\n",
+        "display(mvp[non_numeric_cols].head())"
+      ],
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#Mostrando as colunas que tem apenas variáveis categóricas\n",
+        "mvp.select_dtypes(include='object').describe()"
+      ],
+      "metadata": {
+        "id": "WIxkxLVLCPso"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#verificando as 10 primeiras linhas\n",
+        "mvp.head()"
+      ],
+      "metadata": {
+        "id": "7vYr1lmAU_iR"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# exibindo as últimas linhas\n",
+        "mvp.tail()"
+      ],
+      "metadata": {
+        "id": "z-iYxhZwdrd4"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "mvp.shape"
+      ],
+      "metadata": {
+        "id": "VO2d9NwTVPtj"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# Mostra as informações do dataset\n",
+        "mvp.info()"
+      ],
+      "metadata": {
+        "id": "NbTxwB3YVR0z"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# exibindo um sumário estatístico\n",
+        "mvp.describe()"
+      ],
+      "metadata": {
+        "id": "hy2evZmwVaNi"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#Unique values of categorical columns\n",
+        "for col in mvp_cols:\n",
+        "    unique_values = mvp[col].unique()\n",
+        "    print(f\"Unique values in column '{col}':\")\n",
+        "    print(unique_values)\n",
+        "    print(\"\\n\"+\"=\"*60+\"\\n\")"
+      ],
+      "metadata": {
+        "id": "32TzSiuE323h"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#Dados estatíscos da amostra que tem doenças crônicas do rins\n",
+        "mvp['classification'] = mvp['classification'].replace('ckd\\t', 'ckd')\n",
+        "\n",
+        "# Filter for 'ckd' classification and display its statistical summary\n",
+        "mvp[mvp['classification'] == 'ckd'].describe()"
+      ],
+      "metadata": {
+        "id": "KdXdsRoup3MS"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# Clean 'classification' column by replacing 'ckd\\t' with 'ckd'\n",
+        "mvp['classification'] = mvp['classification'].replace('ckd\\t', 'ckd')\n",
+        "\n",
+        "# Filter for 'notckd' classification and display its statistical summary\n",
+        "mvp[mvp['classification'] == 'notckd'].describe()"
+      ],
+      "metadata": {
+        "id": "h6tLM_iAq6ET"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# exibindo os nomes das colunas\n",
+        "mvp.columns"
+      ],
+      "metadata": {
+        "id": "Cv8lrXzoVnG0"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# exibindo a quantidade de linhas por coluna\n",
+        "mvp.count()"
+      ],
+      "metadata": {
+        "id": "hZnrSHIaV5ng"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# ordenando o dataframe por uma coluna\n",
+        "mvp.sort_values(by='bp')"
+      ],
+      "metadata": {
+        "id": "Qrzn8AyiWM1R"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# ordenando por uma coluna de ordem descendente\n",
+        "mvp.sort_values(by='bp', ascending=False)"
+      ],
+      "metadata": {
+        "id": "twJhoD3MXZ6q"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#Exibindo o gráfico de idade por pressão arterial\n",
+        "\n",
+        "\n",
+        "# Clean 'classification' column by replacing 'ckd\\t' with 'ckd'\n",
+        "mvp['classification'] = mvp['classification'].replace('ckd\\t', 'ckd')\n",
+        "\n",
+        "# Create a line plot showing the relationship between age and blood pressure,\n",
+        "# with different lines for each classification type.\n",
+        "plt.figure(figsize=(10, 6))\n",
+        "sns.lineplot(x='age', y='bp', hue='classification', data=mvp, marker='o')\n",
+        "\n",
+        "plt.title('Blood Pressure vs. Age by Classification')\n",
+        "plt.xlabel('Age')\n",
+        "plt.ylabel('Blood Pressure (mm/Hg)')\n",
+        "plt.grid(True, linestyle='--', alpha=0.7)\n",
+        "plt.legend(title='Classification')\n",
+        "plt.tight_layout()\n",
+        "plt.show()"
+      ],
+      "metadata": {
+        "id": "bYtKglPvjfYr"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# selecionando linhas segundo um critério\n",
+        "mvp[mvp['bp'] > 100]"
+      ],
+      "metadata": {
+        "id": "9uwR1fjaePEL"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# exibindo a média de cada atributo, agrupado por classificação\n",
+        "# Convert 'pcv', 'wc', and 'rc' columns to numeric, coercing errors to NaN\n",
+        "mvp['pcv'] = pd.to_numeric(mvp['pcv'], errors='coerce')\n",
+        "mvp['wc'] = pd.to_numeric(mvp['wc'], errors='coerce')\n",
+        "mvp['rc'] = pd.to_numeric(mvp['rc'], errors='coerce')\n",
+        "\n",
+        "# exibindo a média de cada atributo, agrupado por classificação, apenas para colunas numéricas\n",
+        "mvp.groupby('classification').mean(numeric_only=True)"
+      ],
+      "metadata": {
+        "id": "G9dm19iOepU8"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# exibindo a média de cada atributo, agrupado por hipertenção, apenas para colunas numéricas\n",
+        "mvp.groupby('htn').mean(numeric_only=True)"
+      ],
+      "metadata": {
+        "id": "o_HCc7tKoOmn"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#Exibindo as linhas que tem a classificação \"ckd\\t\"\n",
+        "mvp[mvp['classification'] == 'ckd\\t']"
+      ],
+      "metadata": {
+        "id": "flY4c8LMMCW4"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# selecionando um subconjunto de colunas para todas as linhas\n",
+        "mvp.loc[:, ['age', 'bp', 'htn', 'dm', 'cad','classification']]"
+      ],
+      "metadata": {
+        "id": "6hzR7eetX8ue"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# plotando o gráfico de Vida util x Indice de saúde\n",
+        "plt.scatter(mvp['age'], mvp['bp'])\n",
+        "\n",
+        "# incluindo título do gráfico e rótulos dos eixos\n",
+        "plt.title('Blood pressure x Age')\n",
+        "plt.xlabel('Age')\n",
+        "plt.ylabel('Blood pressure (mm/Hg)');"
+      ],
+      "metadata": {
+        "id": "hK7_ztFVYO08"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# scatter plot com Seaborn\n",
+        "sns.scatterplot(x='age', y='bp', data=mvp);"
+      ],
+      "metadata": {
+        "id": "qn7V4NJ0h2kv"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# Histograma\n",
+        "\n",
+        "# plotando o histograma\n",
+        "plt.hist(mvp['age'], bins=2, edgecolor='black', color='yellow')\n",
+        "\n",
+        "# incluindo título do gráfico e legenda\n",
+        "plt.title('Age')\n",
+        "plt.ylabel('Frequência')\n",
+        "plt.xlabel('age');"
+      ],
+      "metadata": {
+        "id": "q-q_Gu34aBai"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# configurando um grupo de subplots em um grid de 1 linha e 2 colunas\n",
+        "# e também o tamanho da figura\n",
+        "fig, ax = plt.subplots(2,2, figsize = (8, 8))\n",
+        "\n",
+        "# Convert 'wc' and 'rc' columns to numeric, coercing errors to NaN\n",
+        "mvp['wc'] = pd.to_numeric(mvp['wc'], errors='coerce')\n",
+        "mvp['rc'] = pd.to_numeric(mvp['rc'], errors='coerce')\n",
+        "\n",
+        "# subplot1: histograma do Pressão arterial\n",
+        "ax[0,0].hist(mvp['bp'], bins=3, edgecolor='black')\n",
+        "ax[0,0].set_title(\"Blood pressure (mm/Hg)\")\n",
+        "\n",
+        "# subplot2: histograma da Idade\n",
+        "ax[0,1].hist(mvp['age'], bins=4, edgecolor='black')\n",
+        "ax[0,1].set_title(\"Age\") # Changed title to reflect 'age'\n",
+        "\n",
+        "# subplot3: histograma de células brancas\n",
+        "ax[1,0].hist(mvp['wc'].dropna(), bins=4, edgecolor='black')\n",
+        "ax[1,0].set_title(\"wc in cells/cumm\")\n",
+        "\n",
+        "# subplot4: histograma de células vermelhas\n",
+        "ax[1,1].hist(mvp['rc'].dropna(), bins=3, edgecolor='black');\n",
+        "ax[1,1].set_title(\"rc in millions/cmm\");"
+      ],
+      "metadata": {
+        "id": "5ujim6UahOBD"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# histograma com seaborn\n",
+        "sns.histplot(mvp['bp'], bins=3);"
+      ],
+      "metadata": {
+        "id": "6P8X6cGyHMIt"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# Histograma\n",
+        "mvp.hist(figsize = (22,12))\n",
+        "plt.show()"
+      ],
+      "metadata": {
+        "id": "x1_ujURFMG-v"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# Boxplot\n",
+        "mvp.plot(kind = 'box', subplots = True, layout = (6,3), sharex = False, sharey = False, figsize = (22,20))\n",
+        "plt.show()"
+      ],
+      "metadata": {
+        "id": "xPr1YR46MYmH"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# Boxplot sem Outliers\n",
+        "mvp.plot(kind = 'box', subplots = True, layout = (6,3), sharex = False, sharey = False, figsize = (22,12), showfliers=False)\n",
+        "plt.show()"
+      ],
+      "metadata": {
+        "id": "5nW1cYVdMtq3"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# boxplot com seaborn\n",
+        "sns.boxplot(x=mvp['bp']);"
+      ],
+      "metadata": {
+        "id": "4uocrW30G1Sm"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# boxplot com seaborn sem outliers\n",
+        "plt.figure(figsize=(10, 6))\n",
+        "sns.boxplot(x=mvp['bp'], showfliers=False);"
+      ],
+      "metadata": {
+        "id": "nb7ewAp5Ih88"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# Correlação de Pearson\n",
+        "mvp.corr(method = 'pearson', numeric_only=True)"
+      ],
+      "metadata": {
+        "id": "JtSmurQUcy4i"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# Density Plot\n",
+        "mvp.plot(kind = 'density', subplots = True, layout = (4,4), sharex = False, figsize = (15,10))\n",
+        "plt.show()"
+      ],
+      "metadata": {
+        "id": "JYhrJTjodyAI"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# Boxplot\n",
+        "mvp.plot(kind = 'box', subplots = True, layout = (4,4), sharex = False, sharey = False, figsize = (10,15))\n",
+        "plt.show()"
+      ],
+      "metadata": {
+        "id": "qZUvHNnnfiR5"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# Boxplot\n",
+        "mvp.plot(kind = 'box', subplots = True, layout = (4,4), sharex = False, sharey = False, figsize = (10,15), sym='')\n",
+        "plt.show()"
+      ],
+      "metadata": {
+        "id": "aG_Lj5doJlFl"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# configurando um grupo de subplots em um grid de 1 linha e 2 colunas\n",
+        "# e também o tamanho da figura\n",
+        "fig, ax = plt.subplots(2,2, figsize = (8, 8))\n",
+        "\n",
+        "# subplot1: boxplot do comprimento_sepala\n",
+        "ax[0,0].boxplot(mvp['bp'])\n",
+        "ax[0,0].set_title(\"Blood pressure\")\n",
+        "\n",
+        "# subplot2: boxplot da largura_sepala\n",
+        "ax[0,1].boxplot(mvp['age'])\n",
+        "ax[0,1].set_title(\"Age\")\n",
+        "\n",
+        "# subplot3: boxplot do comprimento_petala\n",
+        "ax[1,0].boxplot(mvp['rc'])\n",
+        "ax[1,0].set_title(\"rc in millions/cmm\")\n",
+        "\n",
+        "# subplot4: boxplot da largura_petala\n",
+        "ax[1,1].boxplot(mvp['wc']);\n",
+        "ax[1,1].set_title(\"wc in cells/cumm\")"
+      ],
+      "metadata": {
+        "id": "2c0ECYq8kBih"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# boxplot com seaborn\n",
+        "sns.boxplot(x=mvp['bp']);"
+      ],
+      "metadata": {
+        "id": "gdxVc1dQiaw0"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# scatter plot com Seaborn colorido por classes\n",
+        "sns.scatterplot(x='age', y='bp', hue='classification', data=mvp);"
+      ],
+      "metadata": {
+        "id": "qqyeNuGrE1it"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# scatter plot com Seaborn colorido por classes\n",
+        "sns.scatterplot(x='bp', y='dm', hue='classification', data=mvp);"
+      ],
+      "metadata": {
+        "id": "Gg0-ArGiFgyr"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [],
+      "metadata": {
+        "id": "_Z3-g9jlgZlp"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# gráfico de linhas com Seaborn\n",
+        "sns.lineplot(data=mvp.drop(['htn'], axis=1));"
+      ],
+      "metadata": {
+        "id": "pUhiwKLMGKTS"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# Matriz de Correlação com Seaborn\n",
+        "plt.figure(figsize = (18,12))\n",
+        "sns.heatmap(mvp.corr(numeric_only=True), annot=True, cmap='RdBu', vmin=-1, vmax=1);"
+      ],
+      "metadata": {
+        "id": "1_Y-lJHcfxcR"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# pair plot 1 com Seaborn\n",
+        "sns.pairplot(mvp);"
+      ],
+      "metadata": {
+        "id": "Ssjv1La0jWJe"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# pair plot 2 com Seaborn\n",
+        "sns.pairplot(mvp, hue = \"classification\",height = 2.5);"
+      ],
+      "metadata": {
+        "id": "mfw7Y_vuHgVT"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "mvp.drop('id',axis=1,inplace=True)\n",
+        "mvp.head()"
+      ],
+      "metadata": {
+        "id": "MulX734XnvHh"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "feature_names=['Age (yrs)','Blood Pressure (mm/Hg)','Specific Gravity','Albumin','Sugar','Red Blood Cells',\n",
+        "               'Pus Cells','Pus Cell Clumps','Bacteria','Blood Glucose Random (mgs/dL)','Blood Urea (mgs/dL)',\n",
+        "               'Serum Creatinine (mgs/dL)','Sodium (mEq/L)','Potassium (mEq/L)','Hemoglobin (gms)','Packed Cell Volume',\n",
+        "               'White Blood Cells (cells/cmm)','Red Blood Cells (millions/cmm)','Hypertension','Diabetes Mellitus',\n",
+        "               'Coronary Artery Disease','Appetite','Pedal Edema','Anemia','Chronic Kidney Disease']\n",
+        "mvp.columns=feature_names"
+      ],
+      "metadata": {
+        "id": "Gh699Xecn7Ev"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "mvp.info()"
+      ],
+      "metadata": {
+        "id": "wwaEp_agoT1N"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "mvp_cols = [col for col in mvp.columns if mvp[col].dtype == \"object\"]\n",
+        "mvp_cols"
+      ],
+      "metadata": {
+        "id": "bV-XH6u0sMRm"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "71ffd7d3"
+      },
+      "source": [
+        "num_cols = [col for col in mvp.columns if mvp[col].dtype != \"object\"]\n",
+        "num_cols"
+      ],
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#Unique values of categorical columns\n",
+        "for col in mvp_cols:\n",
+        "    unique_values = mvp[col].unique()\n",
+        "    print(f\"Unique values in column '{col}':\")\n",
+        "    print(unique_values)\n",
+        "    print(\"\\n\"+\"=\"*60+\"\\n\")"
+      ],
+      "metadata": {
+        "id": "jtEjYXUg3lFB"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "for col in mvp_cols:\n",
+        "    print(f\"{col} has {mvp[col].unique()} values \\n\")"
+      ],
+      "metadata": {
+        "id": "KYorMz1fuYoL"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "plt.figure(figsize = (10,6))\n",
+        "sns.histplot(mvp['Age (yrs)'].dropna(), kde = True, bins = 20, color = 'skyblue')\n",
+        "plt.title(\"age distribution\")\n",
+        "plt.xlabel('Age')\n",
+        "plt.ylabel('Frequency')\n",
+        "plt.show()"
+      ],
+      "metadata": {
+        "id": "qemJMMkQvApM"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "counts = mvp['Hypertension'].value_counts()\n",
+        "print(counts)\n",
+        "plt.pie(counts, labels=counts.index, autopct='%1.1f%%')\n",
+        "plt.title(\"Hypertension Distribution\")\n",
+        "plt.show()"
+      ],
+      "metadata": {
+        "id": "aucbpuntvjDL"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "sns.boxplot(x = 'Chronic Kidney Disease', y = 'Blood Urea (mgs/dL)', data = mvp)"
+      ],
+      "metadata": {
+        "id": "GiSslMP3wCXI"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "mvp['Diabetes Mellitus'].value_counts().plot.pie(autopct = '%1.1f%%', wedgeprops = dict(width = 0.3))"
+      ],
+      "metadata": {
+        "id": "QFp2BSTcwqtR"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "sns.countplot(x = 'Coronary Artery Disease', data = mvp)"
+      ],
+      "metadata": {
+        "id": "4HjMOIbmxIDq"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "sns.countplot(x = 'Pedal Edema', data = mvp)"
+      ],
+      "metadata": {
+        "id": "71kcWc1DxdDZ"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "pd.crosstab(mvp['Diabetes Mellitus'], mvp['Hypertension'])"
+      ],
+      "metadata": {
+        "id": "SyOnJqyGzTBA"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "diabetes_hypertension = pd.crosstab(mvp['Diabetes Mellitus'], mvp['Hypertension'])\n",
+        "\n",
+        "diabetes_hypertension.plot(kind = 'bar', stacked = True)"
+      ],
+      "metadata": {
+        "id": "Z89GD1ATyOm-"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "pd.crosstab(index=mvp['Diabetes Mellitus'], columns=[mvp['Hypertension'], mvp['Chronic Kidney Disease']])"
+      ],
+      "metadata": {
+        "id": "-ZT-ApWU2UXi"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "diabetes_hypertension = pd.crosstab(index=mvp['Diabetes Mellitus'], columns=[mvp['Hypertension'], mvp['Chronic Kidney Disease']])\n",
+        "\n",
+        "diabetes_hypertension.plot(kind = 'bar', stacked = True)"
+      ],
+      "metadata": {
+        "id": "nD1OeAAh1XWx"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "corr = mvp.corr(numeric_only=True)\n",
+        "plt.figure(figsize = (10,6))\n",
+        "sns.heatmap(corr, annot = True, cmap = 'coolwarm', linewidth = .5)\n",
+        "#annot=True → writes the correlation numbers inside each cell of the heatmap."
+      ],
+      "metadata": {
+        "id": "Kz9r2ieSztde"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "sns.swarmplot(x='Diabetes Mellitus', y='Age (yrs)', hue='Hypertension', data=mvp, palette='pastel', size=8)"
+      ],
+      "metadata": {
+        "id": "ge4ZmGiO0YYv"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "sns.swarmplot(x='Diabetes Mellitus', y='Age (yrs)', hue='Chronic Kidney Disease', data=mvp, palette='pastel', size=8)"
+      ],
+      "metadata": {
+        "id": "HSbnrrk60yoU"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "source": [],
+      "metadata": {
+        "id": "7A95CDdrwDxy"
+      }
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "dbb723e8"
+      },
+      "source": [
+        "mvp.describe()"
+      ],
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "mvp.describe()"
+      ],
+      "metadata": {
+        "id": "KEQuj82BokRz"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "mvp.describe().T"
+      ],
+      "metadata": {
+        "id": "2yVeELd77rNf"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "for col in mvp_cols:\n",
+        "    plt.figure(figsize=(8,5))\n",
+        "    plt.title(f'Count plot of {col}')\n",
+        "    sns.countplot(x=mvp[col],palette='rocket')\n",
+        "    plt.xlabel(col)\n",
+        "    plt.show()"
+      ],
+      "metadata": {
+        "id": "at_2yvaR4-Se"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "for col in mvp_cols:\n",
+        "    plt.figure(figsize=(8,5))\n",
+        "    plt.title(f'Count plot of {col}')\n",
+        "    sns.countplot(x=col,hue='Chronic Kidney Disease', data= mvp,palette='rocket')\n",
+        "    plt.xlabel(col)\n",
+        "    plt.show()"
+      ],
+      "metadata": {
+        "id": "JSCIRCJZ5UiU"
+      },
+      "execution_count": null,
+      "outputs": []
+    }
+  ]
+}
