@@ -51,6 +51,18 @@
     {
       "cell_type": "code",
       "source": [
+        "from google.colab import drive\n",
+        "drive.mount('/content/drive')"
+      ],
+      "metadata": {
+        "id": "coSn_iNWIGrS"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
         "#from google.colab import files # importa os dados do excel\n",
         "\n",
         "#uploaded = files.upload()"
